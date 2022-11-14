@@ -3,12 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/modelingComputerDomainOperations.iml" filepath="$PROJECT_DIR$/modelingComputerDomainOperations.iml" />
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/org.network.domain/org.network.domain.iml" filepath="$PROJECT_DIR$/org.network.domain/org.network.domain.iml" />
-=======
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/org.network.domain/org.network.domain.iml" filepath="$PROJECT_DIR$/org.network.domain/org.network.domain.iml" />
-=======
 >>>>>>> 13254ae (First commit)
 >>>>>>> 213abb1 (First commit)
     </modules>
