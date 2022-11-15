@@ -8,6 +8,15 @@ public class User implements IFUser{
     private String userPassword;
     private LocalDateTime timeSignIn;
 
+    public User(String userNameForSignInDomain, String fullUserName,
+                String  userPassword,
+                LocalDateTime timeSignIn){
+        setUserNameForSignInDomain(userNameForSignInDomain);
+        setFullUserName(fullUserName);
+        setUserPassword(userPassword);
+        setTimeSignIn(timeSignIn);
+    }
+
     // setters
     public void setUserNameForSignInDomain(String userNameForSignInDomain){
         this.userNameForSignInDomain = userNameForSignInDomain.trim();
