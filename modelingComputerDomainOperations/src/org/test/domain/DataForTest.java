@@ -9,19 +9,63 @@ import java.util.function.Consumer;
 
 public class DataForTest{
     //  arguments for User
-    public String userNameForSignInDomain;
-    public String fullUserName;
-    public String  userPassword;
-    public LocalDateTime timeSignIn;
+    private String userNameForSignInDomain;
+    private String fullUserName;
+    private String  userPassword;
+    private LocalDateTime timeSignIn;
     // arguments for Host
-    public String computerName;
-    public String ipv4;
+    private String computerName;
+    private String ipv4;
+
+    // setters
+    // for User
+    public void setUserNameForSignInDomain(Object userNameForSignInDomain){
+        this.userNameForSignInDomain = (String) userNameForSignInDomain;
+    }
+    public void setFullUserName(Object fullUserName){
+        this.fullUserName = (String) fullUserName;
+    }
+    public void setUserPassword(Object userPassword){
+        this.userPassword = (String) userPassword;
+    }
+    public void setTimeSignIn(Object timeSignIn){
+        this.timeSignIn = (LocalDateTime) timeSignIn;
+    }
+    // for Host
+    public void setComputerName(Object computerName){
+        this.computerName = (String)computerName;
+    }
+    public void setIpv4(Object ipv4) {
+
+        this.ipv4 = (String) ipv4;
+
+    }
+
+    // getters
+    // for User
+    public String getUserNameForSignInDomain(){
+        return this.userNameForSignInDomain;
+    }
+    public String getFullUserName(){
+        return this.fullUserName;
+    }
+    public LocalDateTime getTimeLastSignIn(){
+        return this.timeSignIn;
+    }
+    public String getUserPassword(){return this.userPassword; }
+    // for Host
+    public String getComputerName(){
+        return this.computerName;
+    }
+    public String getIpv4(){
+        return this.ipv4;
+    }
+
 
     // this method for generate some-think field for User
-    public Object generatePerhapsSetBadFieldForUser(Object field, int numberOfData,
-                                          Boolean isUserNameForSignInDomain,
+    static public Object generatePerhapsSetBadFieldForUser( Boolean isUserNameForSignInDomain,
                                           Boolean isFullUserName, Boolean isUserPassword,
-                                          Boolean isTimeSignIn){
+                                          Boolean isTimeSignIn, int numberOfData){
 
         Random random = new Random();
         ArrayList<Boolean> lstBoolVariable = new ArrayList<>(Arrays.asList(isUserNameForSignInDomain,
@@ -63,23 +107,25 @@ public class DataForTest{
 
         // generating field
         switch (numberOfInputField) {
-                // generate userNameForSignInDomain
-                case 0b100:
-                    result = String.format(exampleUserNameForSignInDomain + lineIfBad +
-                             Integer.toString(numberOfData));
-                    return result;
-                // generate fullUserName
-                case 0b010:
-                    result = String.format(exampleFullUserName + lineIfBad +
-                            Integer.toString(numberOfData));
-                    return result;
+            // generate userNameForSignInDomain
+            case 0b100 -> {
+                result = String.format(exampleUserNameForSignInDomain + lineIfBad +
+                        Integer.toString(numberOfData));
+                return result;
+            }
+            // generate fullUserName
+            case 0b010 -> {
+                result = String.format(exampleFullUserName + lineIfBad +
+                        Integer.toString(numberOfData));
+                return result;
+            }
 
-                // generate userPassword
-                case 0b001:
-                    result = String.format(exampleUserPassword + lineIfBad +
-                            Integer.toString(numberOfData));
-                    return result;
-
+            // generate userPassword
+            case 0b001 -> {
+                result = String.format(exampleUserPassword + lineIfBad +
+                        Integer.toString(numberOfData));
+                return result;
+            }
         }
 
         if (isTimeSignIn){
@@ -91,8 +137,7 @@ public class DataForTest{
     }
 
     // this method for generate some-think field for Host
-    public String generatePerhapsSetBadFieldForHost(String field, int numberOfData,
-                                          boolean isComputerName, boolean isIpv4){
+    static public String generatePerhapsSetBadFieldForHost(boolean isComputerName, boolean isIpv4,  int numberOfData){
 
         Random random = new Random();
         ArrayList<Boolean> lstBoolVariable = new ArrayList<>(Arrays.asList(isComputerName, isIpv4));
@@ -120,7 +165,7 @@ public class DataForTest{
 
         // generating field
         if (isComputerName){
-            result = field + lineIfBad + Integer.toString(numberOfData);
+            result = exampleComputerName + lineIfBad + Integer.toString(numberOfData);
         }
 
         if (isIpv4){

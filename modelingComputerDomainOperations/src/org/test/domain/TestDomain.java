@@ -17,10 +17,13 @@ import java.util.Collection;
 import java.util.Objects;
 
 
+
 @RunWith(Parameterized.class)
 public class TestDomain implements IFTestDomain{
+    private static final int COUNT_CASE = 1000;
     private ServerDomain testObject;
     private DataForTest testData;
+
 
     @BeforeClass
     void setUp(){
@@ -28,7 +31,7 @@ public class TestDomain implements IFTestDomain{
         testData = new DataForTest();
     }
 
-
+    /*
     TestDomain(String userNameForSignInDomain, String fullUserName, String  userPassword, LocalDateTime timeSignIn,
                String computerName, String ipv4){
         // arguments for User
@@ -39,21 +42,37 @@ public class TestDomain implements IFTestDomain{
         // set arguments for Host
         testData.computerName = computerName;
         testData.ipv4 = ipv4;
-    }
+    }*/
 
     @Parameterized.Parameters
-    public static Collection<Object> data() {
+    public static Collection<DataForTest> data() {
         ArrayList<DataForTest> testData = new ArrayList<>();
 
 
-
-        for (int i = 0; i < 50; i++){
+        for (int i = 0; i < COUNT_CASE; i++){
             DataForTest newObjectData = new DataForTest();
+
+            // generate data for User
+            newObjectData.setUserNameForSignInDomain(DataForTest.generatePerhapsSetBadFieldForUser(
+                    true,false,false,false,i));
+            newObjectData.setFullUserName(DataForTest.generatePerhapsSetBadFieldForUser(
+                    false,true,false,false,i));
+            newObjectData.setUserPassword(DataForTest.generatePerhapsSetBadFieldForUser(
+                    false,false,true,false,i));
+            newObjectData.setTimeSignIn(DataForTest.generatePerhapsSetBadFieldForUser(
+                    false,false,false,true,i));
+
+            // generate data for Host
+            newObjectData.setComputerName(DataForTest.generatePerhapsSetBadFieldForHost(
+                    true,false,i));
+            newObjectData.setIpv4(DataForTest.generatePerhapsSetBadFieldForHost(
+                    false,true,i));
+
+
             testData.add(newObjectData);
         }
-
-        return  Arrays.asList(testData);
-        //Object[] testData = new Object[]{   {" userNameForSignInDomain_0 "," Full User Name_0 ", "userPassword_0 ", LocalDateTime.now() };
+        
+        return  testData;
 
     }
 
