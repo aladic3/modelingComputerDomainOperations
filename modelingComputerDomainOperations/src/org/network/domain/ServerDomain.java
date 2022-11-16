@@ -3,7 +3,7 @@ package org.network.domain;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-public class ServerDomain extends Host {
+public class ServerDomain extends Host implements IFServerDomain {
 
     private final DomainHosts domainHosts = new DomainHosts();
     private final DomainUsers domainUsers = new DomainUsers();

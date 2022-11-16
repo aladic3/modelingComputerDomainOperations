@@ -1,68 +1,101 @@
 package org.test.domain;
 
-import org.junit.*;
+import org.junit.Before;
 
-
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.network.domain.ServerDomain;
 
 import org.network.domain.Host;
 import org.network.domain.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
-public class TestDomain {
+
+@RunWith(Parameterized.class)
+public class TestDomain extends TestData implements IFTestDomain{
     private ServerDomain testObject;
-    TestDomain(){
-        this.testObject = new ServerDomain("","");
-    }
 
     @BeforeClass
-    
+    void setUp(){
+        testObject = new ServerDomain("","");
+    }
 
-    public static void testIfValidIpv4(){//String ipv4){
+
+    TestDomain(String userNameForSignInDomain, String fullUserName, String  userPassword, LocalDateTime timeSignIn,
+               String computerName, String ipv4){
+        // arguments for User
+        this.userNameForSignInDomain = userNameForSignInDomain;
+        this.fullUserName = fullUserName;
+        this.userPassword = userPassword;
+        this.timeSignIn = timeSignIn;
+        // set arguments for Test
+        this.computerName = computerName;
+        this.ipv4 = ipv4;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object> data() {
+        ArrayList<TestData> testData = new ArrayList<>();
+
+
+
+        for (int i = 0; i < 50; i++){
+            TestData newObjectData = new TestData();
+            testData.add(newObjectData);
+        }
+
+        return  Arrays.asList(testData);
+        //Object[] testData = new Object[]{   {" userNameForSignInDomain_0 "," Full User Name_0 ", "userPassword_0 ", LocalDateTime.now() };
 
     }
 
-    public static void testIsUserNotIncludeInDomain(User user){
+    @Test
+    public void addUserToDomainUsers(){
+        ;
+    }
+
+    @Test
+    public void addHostToDomainHosts(){
 
     }
 
-    public static void isHostNotIncludeInDomain(Host host){
+    @Test
+    public void dellHostFromDomainHosts(){
+
+    }
+    @Test
+    public void dellUserFromDomainUsers(){
 
     }
 
-    public static void addUserToDomainUsers (String userNameForSignInDomain, String fullUserName,
-                                        String  userPassword,
-                                        LocalDateTime timeSignIn){
+    @Test
+    public void printDomainName(){
 
     }
 
-    public static void addHostToDomainHosts(String computerName, String ipv4){
+    @Test
+    public void printDomainHosts(){
 
     }
 
-    public static void dellHostFromDomainHosts(Host host){
-
-    }
-    public static void dellUserFromDomainUsers(User user){
-
-    }
-    public static void printDomainName(){
+    @Test
+    public void printDomainUsers(){
 
     }
 
-    public static void printDomainHosts(){
+    @Test
+    public void printIndividualUser(){
 
     }
 
-    public static void printDomainUsers(){
-
-    }
-
-    public static void printIndividualUser(String userNameForSignInDomain, String fullUserName){
-
-    }
-
-    public static void printIndividualHost(String computerName, String ipv4){
+    @Test
+    public void printIndividualHost(){
 
     }
 }
