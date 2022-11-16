@@ -18,35 +18,37 @@ import java.util.Objects;
 
 
 @RunWith(Parameterized.class)
-public class TestDomain extends TestData implements IFTestDomain{
+public class TestDomain implements IFTestDomain{
     private ServerDomain testObject;
+    private DataForTest testData;
 
     @BeforeClass
     void setUp(){
         testObject = new ServerDomain("","");
+        testData = new DataForTest();
     }
 
 
     TestDomain(String userNameForSignInDomain, String fullUserName, String  userPassword, LocalDateTime timeSignIn,
                String computerName, String ipv4){
         // arguments for User
-        this.userNameForSignInDomain = userNameForSignInDomain;
-        this.fullUserName = fullUserName;
-        this.userPassword = userPassword;
-        this.timeSignIn = timeSignIn;
-        // set arguments for Test
-        this.computerName = computerName;
-        this.ipv4 = ipv4;
+        testData.userNameForSignInDomain = userNameForSignInDomain;
+        testData.fullUserName = fullUserName;
+        testData.userPassword = userPassword;
+        testData.timeSignIn = timeSignIn;
+        // set arguments for Host
+        testData.computerName = computerName;
+        testData.ipv4 = ipv4;
     }
 
     @Parameterized.Parameters
     public static Collection<Object> data() {
-        ArrayList<TestData> testData = new ArrayList<>();
+        ArrayList<DataForTest> testData = new ArrayList<>();
 
 
 
         for (int i = 0; i < 50; i++){
-            TestData newObjectData = new TestData();
+            DataForTest newObjectData = new DataForTest();
             testData.add(newObjectData);
         }
 

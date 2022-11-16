@@ -6,7 +6,7 @@ public class Host implements IFHost{
     private String computerName;
     private String ipv4;
 
-    Host(String computerName, String ipv4){
+    Host(String computerName,String ipv4){
         setComputerName(computerName);
         setIpv4(ipv4);
     }
