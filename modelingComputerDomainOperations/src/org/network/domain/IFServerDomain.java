@@ -1,16 +1,13 @@
 package org.network.domain;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-
 public interface IFServerDomain {
 
     public boolean addUserToDomainUsers (String userNameForSignInDomain, String fullUserName,
                                          String  userPassword,
-                                         LocalDateTime timeSignIn);
+                                         String timeSignIn);
     public boolean addHostToDomainHosts (String computerName, String ipv4);
-    public boolean dellHostFromDomainHosts(Host host);
-    public boolean dellUserFromDomainUsers(User user);
+    public boolean dellHostFromDomainHosts(String computerName, String ipv4);
+    public boolean dellUserFromDomainUsers(String userNameForSignInDomain, String fullUserName);
     public void printDomainName();
     public void printDomainHosts();
     public void printDomainUsers();

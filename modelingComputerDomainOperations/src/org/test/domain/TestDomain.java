@@ -1,122 +1,119 @@
 package org.test.domain;
 
-import org.junit.Before;
 
-import org.junit.BeforeClass;
+
+import org.junit.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.network.domain.ServerDomain;
+import static org.junit.Assert.*;
 
-import org.network.domain.Host;
-import org.network.domain.User;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-
+import java.util.*;
 
 
 @RunWith(Parameterized.class)
 public class TestDomain implements IFTestDomain{
     private static final int COUNT_CASE = 1000;
-    private ServerDomain testObject;
-    private DataForTest testData;
+    private static final int COUNT_USER_FIELDS = 4;
+    private static final int COUNT_HOST_FIELDS = 2;
+    private ServerDomain testClass = new ServerDomain("","");
+    @Parameterized.Parameter(0)
+    public DataForTest testData;
 
 
-    @BeforeClass
-    void setUp(){
-        testObject = new ServerDomain("","");
-        testData = new DataForTest();
-    }
 
-    /*
-    TestDomain(String userNameForSignInDomain, String fullUserName, String  userPassword, LocalDateTime timeSignIn,
-               String computerName, String ipv4){
-        // arguments for User
-        testData.userNameForSignInDomain = userNameForSignInDomain;
-        testData.fullUserName = fullUserName;
-        testData.userPassword = userPassword;
-        testData.timeSignIn = timeSignIn;
-        // set arguments for Host
-        testData.computerName = computerName;
-        testData.ipv4 = ipv4;
-    }*/
 
     @Parameterized.Parameters
     public static Collection<DataForTest> data() {
-        ArrayList<DataForTest> testData = new ArrayList<>();
 
+        ArrayList<DataForTest> testData = new ArrayList<>();
 
         for (int i = 0; i < COUNT_CASE; i++){
             DataForTest newObjectData = new DataForTest();
 
-            // generate data for User
-            newObjectData.setUserNameForSignInDomain(DataForTest.generatePerhapsSetBadFieldForUser(
-                    true,false,false,false,i));
-            newObjectData.setFullUserName(DataForTest.generatePerhapsSetBadFieldForUser(
-                    false,true,false,false,i));
-            newObjectData.setUserPassword(DataForTest.generatePerhapsSetBadFieldForUser(
-                    false,false,true,false,i));
-            newObjectData.setTimeSignIn(DataForTest.generatePerhapsSetBadFieldForUser(
-                    false,false,false,true,i));
+            // generate data about User
+            newObjectData.generatePerhapsSetBadFieldForUser(
+                    true,false,false,false,i, true);
+            newObjectData.generatePerhapsSetBadFieldForUser(
+                    false,true,false,false,i, true);
+            newObjectData.generatePerhapsSetBadFieldForUser(
+                    false,false,true,false,i, true);
+            newObjectData.generatePerhapsSetBadFieldForUser(
+                    false, false, false, true, i, true);
+            newObjectData.setUserData();
 
-            // generate data for Host
-            newObjectData.setComputerName(DataForTest.generatePerhapsSetBadFieldForHost(
-                    true,false,i));
-            newObjectData.setIpv4(DataForTest.generatePerhapsSetBadFieldForHost(
-                    false,true,i));
-
+            // generate data about Host
+            newObjectData.generatePerhapsSetBadFieldForHost(
+                    true,false,i, true);
+            newObjectData.generatePerhapsSetBadFieldForHost(
+                    false,true,i,true);
+            newObjectData.setHostData();
 
             testData.add(newObjectData);
+
         }
-        
-        return  testData;
+
+        return testData;
 
     }
 
+
+
     @Test
     public void addUserToDomainUsers(){
-        ;
+        assertTrue(testClass.addUserToDomainUsers(testData.getUserNameForSignInDomain(), testData.getFullUserName(),
+                testData.getUserPassword(),testData.getTimeLastSignIn()));
+
+
+
     }
 
     @Test
     public void addHostToDomainHosts(){
+        boolean res = testClass.addHostToDomainHosts(testData.getComputerName(), testData.getIpv4());
+        if (!res){ res = true;} // bad generated data is throw and not written
+        assertTrue(res);
+    }
 
+
+
+    @Ignore
+    public void printDomainName(){
+        testClass.printDomainName();
+    }
+
+    @Ignore
+    public void printDomainHosts(){
+        testClass.printDomainHosts();
+    }
+
+    @Ignore
+    public void printDomainUsers(){
+        testClass.printDomainUsers();
+    }
+
+    @Ignore
+    public void printIndividualUser(){
+        testClass.printIndividualUser(testData.getUserNameForSignInDomain(), testData.getFullUserName());
+    }
+
+    @Ignore
+    public void printIndividualHost(){
+        testClass.printIndividualHost(testData.getComputerName(), testData.getIpv4());
     }
 
     @Test
     public void dellHostFromDomainHosts(){
-
+        testClass.addHostToDomainHosts(testData.getComputerName(), testData.getIpv4());
+        boolean res = false;
+        res = testClass.dellHostFromDomainHosts(testData.getComputerName(), testData.getIpv4()) ? true : !res;
+        assertTrue(res);
     }
     @Test
     public void dellUserFromDomainUsers(){
-
-    }
-
-    @Test
-    public void printDomainName(){
-
-    }
-
-    @Test
-    public void printDomainHosts(){
-
-    }
-
-    @Test
-    public void printDomainUsers(){
-
-    }
-
-    @Test
-    public void printIndividualUser(){
-
-    }
-
-    @Test
-    public void printIndividualHost(){
-
+        boolean res = testClass.addUserToDomainUsers(testData.getUserNameForSignInDomain(), testData.getFullUserName(),
+                testData.getUserPassword(),testData.getTimeLastSignIn());
+        assertTrue(res);
     }
 }

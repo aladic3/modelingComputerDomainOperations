@@ -30,8 +30,8 @@ public class Host implements IFHost{
     }
 
     // other
-    public void printInfoAboutDomain(){
-        System.out.printf("Domain: %s; IPv4: %s%n", getComputerName(), getIpv4());
+    public void printInfoAboutDomain(Host host){
+        System.out.printf("Domain: %s; IPv4: %s%n", host.getComputerName(), host.getIpv4());
     }
 
 

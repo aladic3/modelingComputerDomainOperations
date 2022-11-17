@@ -1,21 +1,24 @@
 package org.test.domain;
 
-import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.function.Consumer;
 
 public class DataForTest{
     //  arguments for User
     private String userNameForSignInDomain;
     private String fullUserName;
     private String  userPassword;
-    private LocalDateTime timeSignIn;
+    private String timeSignIn;
+    private ArrayList<String> userData;
     // arguments for Host
     private String computerName;
     private String ipv4;
+    private ArrayList<String> hostData;
+
+
+
 
     // setters
     // for User
@@ -29,8 +32,12 @@ public class DataForTest{
         this.userPassword = (String) userPassword;
     }
     public void setTimeSignIn(Object timeSignIn){
-        this.timeSignIn = (LocalDateTime) timeSignIn;
+        this.timeSignIn = timeSignIn.toString();
     }
+    public void setUserData(){
+        userData = new ArrayList<String>(Arrays.asList(userNameForSignInDomain,fullUserName,userPassword,timeSignIn));
+    }
+
     // for Host
     public void setComputerName(Object computerName){
         this.computerName = (String)computerName;
@@ -40,32 +47,44 @@ public class DataForTest{
         this.ipv4 = (String) ipv4;
 
     }
+    public void setHostData(){
+        hostData = new ArrayList<String>(Arrays.asList(computerName,ipv4));
+    }
+
 
     // getters
     // for User
     public String getUserNameForSignInDomain(){
-        return this.userNameForSignInDomain;
+        return userNameForSignInDomain;
     }
     public String getFullUserName(){
-        return this.fullUserName;
+        return fullUserName;
     }
-    public LocalDateTime getTimeLastSignIn(){
-        return this.timeSignIn;
+    public String getTimeLastSignIn(){
+        return timeSignIn;
     }
     public String getUserPassword(){return this.userPassword; }
+    public ArrayList<String> getUserData(){
+        return userData;
+    }
     // for Host
     public String getComputerName(){
-        return this.computerName;
+        return computerName;
     }
     public String getIpv4(){
-        return this.ipv4;
+        return ipv4;
+    }
+    public ArrayList<String> getHostData(){
+        return hostData;
     }
 
+    private static final int PERHAPS_BAD = 99;
 
     // this method for generate some-think field for User
-    static public Object generatePerhapsSetBadFieldForUser( Boolean isUserNameForSignInDomain,
+    public Object generatePerhapsSetBadFieldForUser( Boolean isUserNameForSignInDomain,
                                           Boolean isFullUserName, Boolean isUserPassword,
-                                          Boolean isTimeSignIn, int numberOfData){
+                                          Boolean isTimeSignIn, int numberOfData, boolean isRunRandom){
+
 
         Random random = new Random();
         ArrayList<Boolean> lstBoolVariable = new ArrayList<>(Arrays.asList(isUserNameForSignInDomain,
@@ -75,11 +94,12 @@ public class DataForTest{
 
 
         String exampleUserNameForSignInDomain = "UserNameForSignInDomain_";
-        String exampleFullUserName = "Full User Name_";
+        String exampleFullUserName = "Full_User_Name_";
         String exampleUserPassword = "UserPassword_";
-        String lineIfBad = "";
 
-        int percentOfPerhapsBad = 5;
+
+        int forRepeatData = 0;
+
         int upperbound = 100;
         int countVariable = lstBoolVariable.size();
         byte numberOfInputField = 0b000; // for get info about input value (for realizing switch)
@@ -88,14 +108,14 @@ public class DataForTest{
         int int_random = random.nextInt(upperbound);
 
 
-        if (int_random < percentOfPerhapsBad){
+        if (int_random < PERHAPS_BAD && isRunRandom){
             isIncorrectField = true;
-            lineIfBad = "Bad_";
+            forRepeatData = -random.nextInt(10);
         }
 
         // init numberOfInputField
         for (int i = 0; i < countVariable ; i++){
-            if (lstBoolVariable.get(i) != null) {
+            if (lstBoolVariable.get(i).equals(true)) {
                 numberOfInputField |= 1;
                 numberOfInputField <<= (countVariable - i - 1);
                 break;
@@ -109,35 +129,42 @@ public class DataForTest{
         switch (numberOfInputField) {
             // generate userNameForSignInDomain
             case 0b100 -> {
-                result = String.format(exampleUserNameForSignInDomain + lineIfBad +
-                        Integer.toString(numberOfData));
+                result = String.format(exampleUserNameForSignInDomain  +
+                        Integer.toString(numberOfData + forRepeatData));
+                userNameForSignInDomain = result.toString();
                 return result;
             }
             // generate fullUserName
             case 0b010 -> {
-                result = String.format(exampleFullUserName + lineIfBad +
-                        Integer.toString(numberOfData));
+                result = String.format(exampleFullUserName +
+                        Integer.toString(numberOfData + forRepeatData));
+                fullUserName = result.toString();
                 return result;
             }
 
             // generate userPassword
             case 0b001 -> {
-                result = String.format(exampleUserPassword + lineIfBad +
+                result = String.format(exampleUserPassword  +
                         Integer.toString(numberOfData));
+                userPassword = result.toString();
                 return result;
             }
         }
 
         if (isTimeSignIn){
-            return LocalDateTime.now();
+            result = LocalDateTime.now().toString();
+            timeSignIn = result.toString();
+            return result;
         }
 
         return null;
 
     }
 
+    private static final int PERHAPS_BAD_U = 50;
     // this method for generate some-think field for Host
-    static public String generatePerhapsSetBadFieldForHost(boolean isComputerName, boolean isIpv4,  int numberOfData){
+    public String generatePerhapsSetBadFieldForHost(boolean isComputerName, boolean isIpv4,  int numberOfData,
+    boolean isRunRandom){
 
         Random random = new Random();
         ArrayList<Boolean> lstBoolVariable = new ArrayList<>(Arrays.asList(isComputerName, isIpv4));
@@ -145,27 +172,29 @@ public class DataForTest{
 
         String exampleComputerName = "ComputerName_";
         String exampleIpv4;
-        String lineIfBad = "";
 
-        int percentOfPerhapsBad = 5;
+
+
         int ipUpperBound = 256;
         int upperbound = 100;
-        int variantBadIp = -1;
+        int variantBadIp = -1; // -1 in switch it is correct ip
+        int forRepeatData = 0;
         int countVariable = lstBoolVariable.size();
         boolean isIncorrectField = false;
 
         int int_random = random.nextInt(upperbound);
 
 
-        if (int_random < percentOfPerhapsBad){
+        if (int_random < PERHAPS_BAD_U && isRunRandom){
             isIncorrectField = true;
-            lineIfBad = "Bad_";
             variantBadIp = random.nextInt(3); // generate type of bad
+            forRepeatData = -1;
         }
 
         // generating field
         if (isComputerName){
-            result = exampleComputerName + lineIfBad + Integer.toString(numberOfData);
+            result = exampleComputerName + Integer.toString(numberOfData + forRepeatData);
+            computerName = result.toString();
         }
 
         if (isIpv4){
@@ -208,6 +237,7 @@ public class DataForTest{
 
             }
             result = String.join(".", fieldsForIpv4);
+            ipv4 = result.toString();
 
         }
 

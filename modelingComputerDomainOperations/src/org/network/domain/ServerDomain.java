@@ -1,7 +1,6 @@
 package org.network.domain;
 
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 public class ServerDomain extends Host implements IFServerDomain {
 
@@ -49,8 +48,8 @@ public class ServerDomain extends Host implements IFServerDomain {
     }
     private  boolean isHostNotIncludeInDomain(Host host){
         for (Host hostInDomain: domainHosts.getDomainHosts()) {
-            if (hostInDomain.getComputerName().equalsIgnoreCase(host.getComputerName()) ||
-            hostInDomain.getIpv4().equalsIgnoreCase(host.getIpv4())){
+            if (hostInDomain.getComputerName().equals(host.getComputerName()) ||
+            hostInDomain.getIpv4().equals(host.getIpv4())){
                return false;
             }
         }
@@ -58,7 +57,7 @@ public class ServerDomain extends Host implements IFServerDomain {
     }
     public boolean addUserToDomainUsers (String userNameForSignInDomain, String fullUserName,
                                       String  userPassword,
-                                      LocalDateTime timeSignIn){
+                                      String timeSignIn){
         User newUser = new User(userNameForSignInDomain,fullUserName,
                 userPassword,
                 timeSignIn);
@@ -91,26 +90,43 @@ public class ServerDomain extends Host implements IFServerDomain {
         }
         return false;
     }
-    public boolean dellHostFromDomainHosts(Host host){
-        return domainHosts.getDomainHosts().remove(host);
+    public boolean dellHostFromDomainHosts(String computerName, String ipv4){
+        for (Host host: domainHosts.getDomainHosts()) {
+            if (host.getIpv4().equals(ipv4) ||
+                host.getComputerName().equals(ipv4)){
+                return domainHosts.getDomainHosts().remove(host);
+            }
+        }
+        return false;
+
     }
-    public boolean dellUserFromDomainUsers(User user){
-        return  domainUsers.getDomainUsers().remove(user);
+    public boolean dellUserFromDomainUsers(String userNameForSignInDomain, String fullUserName){
+        for (User user: domainUsers.getDomainUsers()) {
+            if (user.getFullUserName().equals(fullUserName) ||
+                    user.getUserNameForSignInDomain().equals(userNameForSignInDomain)){
+                return domainUsers.getDomainUsers().remove(user);
+            }
+        }
+        return false;
+
     }
     public void printDomainName(){
-        this.printInfoAboutDomain();
+        for (User host: domainUsers.getDomainUsers() ) {
+            System.out.printf("Full_name: %s Name: %s Last_Sign-In: %s%n",
+                    host.getFullUserName(), host.getUserNameForSignInDomain(), host.getTimeLastSignIn());
+        }
+
+
     }
     public void printDomainHosts(){
-        System.out.println("Print Domain Hosts:");
         for (Host host: domainHosts.getDomainHosts()) {
-           host.printInfoAboutDomain();
+           super.printInfoAboutDomain(host);
         }
     }
     public void printDomainUsers(){
-        System.out.println("Print Domain Users:");
         for (User user: domainUsers.getDomainUsers()) {
-            System.out.printf("Full name: %s Name: %s Last Sign-In: %s",
-                    user.getFullUserName(), user.getUserNameForSignInDomain(), user.getTimeLastSignIn().toString());
+            System.out.printf("Full_name: %s Name: %s Last_Sign-In: %s%n",
+                    user.getFullUserName(), user.getUserNameForSignInDomain(), user.getTimeLastSignIn());
         }
     }
     public void printIndividualUser(String userNameForSignInDomain, String fullUserName){ // may use only one field for search
@@ -118,8 +134,8 @@ public class ServerDomain extends Host implements IFServerDomain {
         for (User userInDomain: domainUsers.getDomainUsers()) {
             if (userInDomain.getUserNameForSignInDomain().equalsIgnoreCase(userNameForSignInDomain) ||
                 userInDomain.getFullUserName().equalsIgnoreCase(fullUserName)){
-                System.out.printf("Full name: %s Name: %s Last Sign-In: %s",
-                        userInDomain.getFullUserName(), userInDomain.getUserNameForSignInDomain(), userInDomain.getTimeLastSignIn().toString());
+                System.out.printf("Full name: %s Name: %s Last Sign-In: %s%n",
+                        userInDomain.getFullUserName(), userInDomain.getUserNameForSignInDomain(), userInDomain.getTimeLastSignIn());
 
                 break;
             }
@@ -130,7 +146,7 @@ public class ServerDomain extends Host implements IFServerDomain {
         for (Host userInDomain: domainHosts.getDomainHosts()) {
             if (userInDomain.getComputerName().equalsIgnoreCase(computerName) ||
                     userInDomain.getIpv4().equalsIgnoreCase(ipv4)){
-                userInDomain.printInfoAboutDomain();
+                userInDomain.printInfoAboutDomain(userInDomain);
                 break;
             }
         }

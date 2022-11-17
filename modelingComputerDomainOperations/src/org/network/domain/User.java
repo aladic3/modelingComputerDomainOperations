@@ -6,11 +6,11 @@ public class User implements IFUser{
     private String userNameForSignInDomain;
     private String fullUserName;
     private String userPassword;
-    private LocalDateTime timeSignIn;
+    private String timeSignIn;
 
     public User(String userNameForSignInDomain, String fullUserName,
                 String  userPassword,
-                LocalDateTime timeSignIn){
+                String timeSignIn){
         setUserNameForSignInDomain(userNameForSignInDomain);
         setFullUserName(fullUserName);
         setUserPassword(userPassword);
@@ -27,7 +27,7 @@ public class User implements IFUser{
     public void setUserPassword(String userPassword){
         this.userPassword = userPassword.trim();
     }
-    public void setTimeSignIn(LocalDateTime timeSignIn){
+    public void setTimeSignIn(String timeSignIn){
         this.timeSignIn = timeSignIn;
     }
 
@@ -38,7 +38,7 @@ public class User implements IFUser{
     public String getFullUserName(){
         return this.fullUserName;
     }
-    public LocalDateTime getTimeLastSignIn(){
+    public String getTimeLastSignIn(){
         return this.timeSignIn;
     }
 
